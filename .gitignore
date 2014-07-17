@@ -1,0 +1,23 @@
+# R stuff
+.Rhistory
+.RData
+
+# Coursera stuff
+submitscript*.R
+specdata/
+UCI\ HAR\ Dataset/
+
+# Files greater than 100mb
+household_power_consumption.txt
+
+# Excel Working Directories
+excel/
+
+# Quiz directories
+quiz/
+
+# Data directories
+data/
+
+#Data Files.
+*.rds
