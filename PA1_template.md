@@ -1,7 +1,8 @@
 # Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
-```{r loadingdata, echo = TRUE}
+
+```r
 ## #############################################################################
 # Reproducible Research: Peer Assessment 1 / PA1_template.Rmd
 #
@@ -71,10 +72,43 @@ activity$realdate <- as.Date(activity$date)
 ```
 
 After we load up the data file, we see what our data frame is all about.
-```{r checkdata, echo = TRUE}
+
+```r
 names(activity)
+```
+
+```
+## [1] "steps"    "date"     "interval" "realdate"
+```
+
+```r
 str(activity)
+```
+
+```
+## 'data.frame':	17568 obs. of  4 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Factor w/ 61 levels "2012-10-01","2012-10-02",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ realdate: Date, format: "2012-10-01" "2012-10-01" ...
+```
+
+```r
 head(activity, 10)
+```
+
+```
+##    steps       date interval   realdate
+## 1     NA 2012-10-01        0 2012-10-01
+## 2     NA 2012-10-01        5 2012-10-01
+## 3     NA 2012-10-01       10 2012-10-01
+## 4     NA 2012-10-01       15 2012-10-01
+## 5     NA 2012-10-01       20 2012-10-01
+## 6     NA 2012-10-01       25 2012-10-01
+## 7     NA 2012-10-01       30 2012-10-01
+## 8     NA 2012-10-01       35 2012-10-01
+## 9     NA 2012-10-01       40 2012-10-01
+## 10    NA 2012-10-01       45 2012-10-01
 ```
 ## What is mean total number of steps taken per day?
 
