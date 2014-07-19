@@ -297,9 +297,6 @@ activity$realdate &lt;- as.Date(activity$date)
 
 ## subset data frame to values without na for later use
 without_na &lt;- activity[complete.cases(activity),]
-
-## subset data frame to values with na for later use
-with_na &lt;- activity[is.na(activity$steps),]
 </code></pre>
 
 <h2>What is mean total number of steps taken per day?</h2>
@@ -487,11 +484,17 @@ median(newtotal$sum_steps)
 
 <h4>What is the impact of imputing missing data on the estimates of the total daily number of steps?</h4>
 
+<p>This seems to highly depend on how you impute the missing data.  Since I used the average for a given interval, there was practically no difference because we basically pulled the averages closer to the inserted average value.</p>
+
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
 
-<p>1) Create a new factor variable in the dataset with two levels - &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day.</p>
+<h3>1) Create a new factor variable in the dataset with two levels - &ldquo;weekday&rdquo; and &ldquo;weekend&rdquo; indicating whether a given date is a weekday or weekend day.</h3>
 
-<p>2) Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:</p>
+<pre><code class="r">## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-120
+newnewactivity &lt;- transform(newactivity, weekend=as.POSIXlt(date, format=&#39;%Y/%m/%d&#39;)$wday %in% c(0, 6))
+</code></pre>
+
+<h3>2) Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:</h3>
 
 </body>
 

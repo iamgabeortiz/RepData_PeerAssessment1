@@ -119,9 +119,6 @@ activity$realdate <- as.Date(activity$date)
 
 ## subset data frame to values without na for later use
 without_na <- activity[complete.cases(activity),]
-
-## subset data frame to values with na for later use
-with_na <- activity[is.na(activity$steps),]
 ```
 
 ## What is mean total number of steps taken per day?
@@ -331,9 +328,16 @@ median(total) = 10765, while median(newtotal) = 10762.  3 step difference.
 
 #### What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
+This seems to highly depend on how you impute the missing data.  Since I used the average for a given interval, there was practically no difference because we basically pulled the averages closer to the inserted average value.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1) Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+### 1) Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-2) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
+```r
+## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-120
+newnewactivity <- transform(newactivity, weekend=as.POSIXlt(date, format='%Y/%m/%d')$wday %in% c(0, 6))
+```
+
+
+### 2) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
