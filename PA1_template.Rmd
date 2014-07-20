@@ -1,7 +1,7 @@
 # Reproducible Research: Peer Assessment 1
 
 ## Assumptions
- - You have set your working directory to the coure project folder.
+ - You have set your working directory to the course project folder.
  - You did not move the activity.zip file from the folder root.
  - Calculate and report the mean and median (total number of (steps taken per day))
   - https://class.coursera.org/repdata-004/forum/thread?thread_id=25#comment-22
@@ -80,9 +80,6 @@ head(activity, 10)
 
 ### 2) Process/transform the data (if necessary) into a format suitable for your analysis
 ```{r processdata, echo=TRUE}
-## add a Date formatted column
-activity$realdate <- as.Date(activity$date)
-
 ## subset data frame to values without na for later use
 without_na <- activity[complete.cases(activity),]
 ```
@@ -224,9 +221,55 @@ This seems to highly depend on how you impute the missing data.  Since I used th
 
 ### 1) Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 ```{r newfactor, echo=TRUE}
-## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-120
-newnewactivity <- transform(newactivity, weekend=as.POSIXlt(date, format='%Y/%m/%d')$wday %in% c(0, 6))
+## create new data frame
+newnewactivity <- newactivity
+
+## set up logical/test vector
+## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-472
+weekend <- weekdays(as.Date(newnewactivity$date)) %in% c("Saturday", "Sunday")
+
+## Fill in weekday column
+## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-125
+newnewactivity$daytype <- "weekday"
+
+## replace "weekday" with "weekend" where day == Sat/Sun
+## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-472
+newnewactivity$daytype[weekend == TRUE] <- "weekend"
+
+## convert new character column to factor
+newnewactivity$daytype <- as.factor(newnewactivity$daytype)
+
+## Check out new data frame
+str(newnewactivity)
+head(newnewactivity, 5)
+
+## double check
+## https://class.coursera.org/repdata-004/forum/thread?thread_id=34#post-472
+weekdays(as.Date(newnewactivity$date[3]))
 ```
 
+### 2) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+```{r panelplots, echo=TRUE}
+## the average number of steps taken, averaged across all days for each 5-minute
+## interval
+newinterval <- aggregate(steps ~ interval + daytype, newnewactivity, mean)
 
-### 2) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
+## add descriptive variable names
+names(newinterval)[3] <- "mean_steps"
+
+## check out new data frame
+head(newinterval, 5)
+
+## plot time series
+library(lattice)
+xyplot(
+        mean_steps ~ interval | daytype,
+        newinterval,
+        type = "l",
+        layout = c(1,2),
+        main = "Time Series Plot of the 5-Minute Interval\nand the Average Number of Steps Taken,\nAveraged Across All Weekday Days or Weekend Days",
+        xlab = "5-Minute Interval",
+        ylab = "Average Number of Steps Taken"
+)
+```
+
